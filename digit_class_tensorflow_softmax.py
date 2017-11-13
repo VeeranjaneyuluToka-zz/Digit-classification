@@ -27,11 +27,13 @@ def main():
     
     sess.run(tf.global_variables_initializer())
     
+    #predict class and loss function
     y = tf.matmul(X, W) + b
     #print("y:",y.get_shape())
     
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
     
+    #train the model
     train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
     
     for _ in range(1000):
@@ -40,6 +42,7 @@ def main():
     #    print(np.shape(batch_ys))
         sess.run(train_step, feed_dict={X:batch_xs, y_:batch_ys})
         
+    #evaluate the model
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     
